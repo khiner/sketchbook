@@ -1,3 +1,0 @@
-
-BubbleSort
-BubbleSort.jar,core.jar,controlP5.jar

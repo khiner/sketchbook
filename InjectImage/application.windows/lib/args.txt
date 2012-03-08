@@ -1,3 +1,0 @@
-
-InjectImage
-InjectImage.jar,core.jar,toxiclibscore.jar,verletphysics.jar,controlP5.jar
