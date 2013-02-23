@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 /**
  * This implementation of Canny Edge Detection is stripped down and
  * adapted from Tom Gibara's implementation at:

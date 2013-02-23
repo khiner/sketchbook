@@ -23,6 +23,7 @@ import toxi.physics2d.behaviors.AttractionBehavior;
 import toxi.physics2d.behaviors.ParticleBehavior2D;
 import toxi.physics2d.*;
 import controlP5.*;
+import java.util.Collections;
 
 final int SNAP_DIST_SQUARED = 49;
 final int DOUBLE_CLICK_TIME = 200;

@@ -52,10 +52,9 @@ void setup() {
   bank = controlP5.addGroup("bank", 0, 0, (int)(.2*width))
                   .setBackgroundHeight(height)
                   .setBackgroundColor(color(255, 0, 0, 100));
-  ControllerSprite sprite = new ControllerSprite(controlP5, loadImage("toolbox_sprite.png"), 30, 30);
   toolbox = controlP5.addButton("toolbox", 0, 10, 10, 30, 30)
                      .setVisible(false);
-  toolbox.setSprite(sprite);
+  toolbox.setImage(loadImage("toolbox_sprite.png"));
 
   textButton = controlP5.addButton("textButton", 0, 10, 10, 45, 45)
                         .setVisible(false);

@@ -7,6 +7,7 @@
  */
 
 import controlP5.*;
+import java.util.Stack;
 
 int[] list_1, list_2;
 ArrayList<Integer> sortedIndices1 = new ArrayList<Integer>();
@@ -30,10 +31,9 @@ String sort1Name = "Quick";
 String sort2Name = "Merge";
 
 void setup() {
-  size(900, 600, P2D);
+  size(900, 600);
   stroke(0);
   strokeWeight(2);
-  textMode(SCREEN);
   //textFont(loadFont("CourierNew36.vstrolw"));
   textSize(16);
   frameRate(10);

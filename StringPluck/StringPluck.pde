@@ -18,7 +18,7 @@ float d;          // x position of pluck
 float damp = 1.1; // damping constant
 
 void setup() {
-  size(800, 600, P2D);
+  size(800, 600);
   strokeWeight(3);
   smooth();
   controlP5 = new ControlP5(this);

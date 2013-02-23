@@ -8,6 +8,7 @@
 import java.awt.Color;
 import toxi.geom.Rect;
 import toxi.geom.Vec2D;
+import java.util.Stack;
 
 final float RATIO = 1.336;        // x::y ratio
 final int tMax = 5000;            // max # of iterations    
