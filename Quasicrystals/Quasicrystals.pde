@@ -1,3 +1,14 @@
+/*
+ * Quasicrystals
+ * Author: Karl Hiner
+ * CS350, Winter 2012
+ *
+ * Mess with the display controls,
+ * Choose from 5-, 7-, 9-, or 11-fold symmetry
+ * Click and drag the vector arrows in the upper left
+ * to manually change the orientation of the symmetry,
+ * or click 'Play' button to automate the orientation changes
+ */
 import controlP5.*;
 
 final static int NO_COLOR = 0;
@@ -15,7 +26,6 @@ boolean outlines = true;
 boolean tiles = true;
 boolean lines = false;
 
-int playCount;
 int[] index;
 Vector[] vectors;
 float[][] intercepts;
@@ -25,7 +35,7 @@ Vector mouseVec = new Vector();
 ControlP5 controlP5;
 
 void setup() {
-  size(800, 800, P2D);
+  size(800, 600, P2D);
   colorMode(RGB, 1);
   vectorSelector = new VectorSelector();
   // mouse wheel for scaling
@@ -72,7 +82,6 @@ void setup() {
 }
 
 void reset() {
-  playCount = 0;
   vectorSelector.initAngles();
   index = new int[SYMMETRY];
   vectors = new Vector[SYMMETRY];
@@ -86,14 +95,13 @@ void setupToggle(String name, boolean flag, int x, int y) {
   controlP5.controller(name).captionLabel().style().marginTop = -12;
 }
 
+// main draw method
 void draw() {
-  setupDraw();
-  background(1); // white background
-  
+  setupDraw(); // get things ready
   pushMatrix();
-  scale(SCALE);
+  scale(SCALE); // scale appropriately based on mouse scrolling
   Vector centerVec = getTileVector(SYMMETRY/2, SYMMETRY/2 + 1, N/2, N/2);  
-  if (centerVec != null)
+  if (centerVec != null) // translate to center vector for stable look
     translate(-centerVec.x + width/20 + SCROLL.x, -centerVec.y + height/20 + SCROLL.y);
   if (tiles)
     drawTiles();
@@ -102,38 +110,51 @@ void draw() {
   popMatrix();
   
   vectorSelector.draw();
-  controlP5.draw();
+  controlP5.draw(); // since we are using P2D, need to manually draw controllers
 }
 
 // call this method before each draw to compute everything for next frame
 void setupDraw() {
+  background(1); // white background 
   if (outlines)
     stroke(0);
   else
     noStroke();
   if (playing) {
-    playCount++;
-    vectorSelector.setAngle(0, playCount*.05);
+    // automate rotation of vectors by adding diff values to their angles
+    for (int i = 0; i < SYMMETRY; i++) {
+      vectorSelector.addToAngle(i, 0.02f*(i + 1));
+    }
   }
   setIntercepts();
 }
 
+// find y-intercepts of all lines based on the current
+// orientation of vectors
 void setIntercepts() {
   for (int i = 0; i < SYMMETRY; i++)
     setIntercept(i, vectorSelector.getAngle(i));
 }
 
+// initialize the vector at index i with the given angle phi, and
+// find the y-intercepts of all lines oriented int the direction
+// of the vector
 void setIntercept(int i, float phi) {
   vectors[i] = new Vector(cos(phi), sin(phi));
   Vector norm = vectors[i].getNormal();
   for (int n = 0; n < N; n++) {
     float offset = (n - N/2);
     float x1 = vectors[i].x + norm.x*offset + i;
+    // the *1.4 is an arbitrary offset to ensure no more than two
+    // lines intersect at any point
     float y1 = vectors[i].y + norm.y*offset + i*1.4;
     intercepts[i][n] = y1 - vectors[i].slope*x1;
   }
 }
 
+/** 
+ * Draw the lines which the tiling is generated from.
+ */
 void drawLines() {
   stroke(color(1, 0, 0));
   for (int vec_index = 0; vec_index < SYMMETRY; ++vec_index) {
@@ -144,6 +165,9 @@ void drawLines() {
   }
 }
 
+/**
+ * Draw all tiles
+ */
 void drawTiles() {
   for (int t1 = 0; t1 < SYMMETRY; t1++)
     for (int t2 = t1 + 1; t2 < SYMMETRY; t2++)
@@ -178,7 +202,7 @@ Vector getTileVector(int t1, int t2, int n1, int n2) {
     for (int i = 0; i < SYMMETRY; i++)
       v.add(vectors[i].getScaled(index[i]));
 
-    // compute color
+    // compute color (currently only grayscale)
     float c = 0.0;
     if (colorMode != NO_COLOR) {
       for (int i = 0; i < SYMMETRY; i++)

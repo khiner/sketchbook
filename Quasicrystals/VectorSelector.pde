@@ -1,3 +1,4 @@
+/* A circle of controllable vectors*/
 class VectorSelector {
   float[] angles;
   int sz = 70;
@@ -16,17 +17,17 @@ class VectorSelector {
   }
   
   void draw() {
-    pushStyle();
+    pushStyle(); // encapsulate the drawing style (fill, stroke)
     fill(1);
-    ellipse(x, y, sz, sz);
+    ellipse(x, y, sz, sz); // draw white circle
     for (int i = 0; i < SYMMETRY; i++) {
-      if (i == vecWithMouse)
+      if (i == vecWithMouse) // draw arrow being dragged as red
         stroke(color(1, 0, 0));
       else
-        stroke(0);
+        stroke(0); // otherwise, draw black arrow
       arrow(x, y, x + arrowLength*cos(angles[i]), y + arrowLength*sin(angles[i]), angles[i]);
     }
-    popStyle();
+    popStyle(); // go back to previous drawing style
   }
 
   boolean isMouseOver() {
@@ -68,8 +69,11 @@ class VectorSelector {
     return angles[index];
   }
   
-  void setAngle(int index, float angle) {
-    angles[index] = angle;
+  /*
+   * Add the given amount to the angle with given index.
+   */
+  void addToAngle(int index, float add) {
+    angles[index] += add;
   }
 }
 
